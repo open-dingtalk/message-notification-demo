@@ -7,17 +7,21 @@ import com.aliyun.dingtalk.util.AccessTokenUtil;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
 import com.dingtalk.api.request.OapiChatCreateRequest;
+import com.dingtalk.api.request.OapiChatGetReadListRequest;
 import com.dingtalk.api.request.OapiChatSendRequest;
 import com.dingtalk.api.request.OapiMessageCorpconversationAsyncsendV2Request;
 import com.dingtalk.api.response.OapiChatCreateResponse;
+import com.dingtalk.api.response.OapiChatGetReadListResponse;
 import com.dingtalk.api.response.OapiChatSendResponse;
 import com.dingtalk.api.response.OapiMessageCorpconversationAsyncsendV2Response;
 import com.taobao.api.ApiException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -73,12 +77,51 @@ public class MessageNotificationServiceImpl implements MessageNotificationServic
         String accessToken = AccessTokenUtil.getAccessToken(appConfig.getAppKey(), appConfig.getAppSecret());
 
         // 创建群会话
-        String openConversationId = createChat(accessToken);
+        String chatid = createChat(accessToken);
 
         // 发送群消息
-        String messageId = sendChatMessage(openConversationId, accessToken);
+        String messageId = sendChatMessage(chatid, accessToken);
 
         return messageId;
+    }
+
+    /**
+     * 获取群消息已读人员列表
+     * @param messageId
+     * @return
+     */
+    @Override
+    public List<String> getReadList(String messageId) {
+
+        String accessToken = AccessTokenUtil.getAccessToken(appConfig.getAppKey(), appConfig.getAppSecret());
+
+        DingTalkClient client = new DefaultDingTalkClient(UrlConstant.GET_READ_LIST_URL);
+
+        OapiChatGetReadListRequest req = new OapiChatGetReadListRequest();
+        req.setMessageId(messageId);
+        req.setCursor(0L);
+        req.setSize(10L);
+        req.setHttpMethod(HttpMethod.GET.name());
+
+        try {
+            OapiChatGetReadListResponse rsp = client.execute(req, accessToken);
+
+            if (!Objects.isNull(rsp)) {
+                if (rsp.isSuccess()) {
+
+                    List<String> userIdList = rsp.getReadUserIdList();
+                    return userIdList;
+                } else {
+                    log.error("get read list error, errCode: {}, errMsg: {}", rsp.getErrcode(), rsp.getErrmsg());
+                }
+            } else {
+                log.error("get read list fail");
+            }
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     /**
@@ -97,8 +140,8 @@ public class MessageNotificationServiceImpl implements MessageNotificationServic
             if (!Objects.isNull(rsp)) {
                 if (rsp.isSuccess()) {
 
-                    String openConversationId = rsp.getOpenConversationId();
-                    return openConversationId;
+                    String chatid = rsp.getChatid();
+                    return chatid;
                 } else {
                     log.error("create chat error, errCode: {}, errMsg: {}", rsp.getErrcode(), rsp.getErrmsg());
                 }
@@ -130,10 +173,10 @@ public class MessageNotificationServiceImpl implements MessageNotificationServic
                     String messageId = rsp.getMessageId();
                     return messageId;
                 } else {
-                    log.error("create chat error, errCode: {}, errMsg: {}", rsp.getErrcode(), rsp.getErrmsg());
+                    log.error("send chat error, errCode: {}, errMsg: {}", rsp.getErrcode(), rsp.getErrmsg());
                 }
             } else {
-                log.error("create chat fail");
+                log.error("send chat fail");
             }
         } catch (ApiException e) {
             e.printStackTrace();

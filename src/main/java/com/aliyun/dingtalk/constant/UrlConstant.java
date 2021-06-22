@@ -24,4 +24,9 @@ public class UrlConstant {
      * 发送群消息url
      */
     public static final String SEND_CHAT_MESSAGE = "https://oapi.dingtalk.com/chat/send";
+
+    /**
+     * 获取已读消息人员列表url
+     */
+    public static final String GET_READ_LIST_URL = "https://oapi.dingtalk.com/chat/getReadList";
 }

@@ -4,6 +4,7 @@ import com.aliyun.dingtalk.service.MessageNotificationService;
 import com.aliyun.dingtalk.model.RpcServiceResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,6 +49,18 @@ public class MessageNotificationController {
     public RpcServiceResult sendGroupMessage() {
 
         return RpcServiceResult.getSuccessResult(messageNotificationService.sendGroupMessage());
+
+    }
+
+    /**
+     *
+     *
+     * @return
+     */
+    @GetMapping("/message/group/{messageId}")
+    public RpcServiceResult getReadList(@PathVariable String messageId) {
+
+        return RpcServiceResult.getSuccessResult(messageNotificationService.getReadList(messageId));
 
     }
 
