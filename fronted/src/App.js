@@ -137,6 +137,7 @@ dd.ready(function () {
                             sessionStorage.setItem("unionId", response.data.data.unionid);
                             sessionStorage.setItem("deptId", response.data.data.deptIdList[0]);
                             const qs = require('qs');
+                            // 获取部门部门用户详情
                             axios.get(domain + "/users", {
                                 params: {
                                     deptIds: response.data.data.deptIdList,
