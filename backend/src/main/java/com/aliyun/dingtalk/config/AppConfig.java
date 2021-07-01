@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class AppConfig {
 
+    @Value("${dingtalk.corp_id}")
+    private String corpId;
+
     @Value("${dingtalk.app_key}")
     private String appKey;
 

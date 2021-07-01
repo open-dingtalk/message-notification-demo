@@ -1,8 +1,11 @@
 package com.aliyun.dingtalk.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.aliyun.dingtalk.model.DingTalkWorkNoticeInputVO;
 import com.aliyun.dingtalk.model.GroupMessageInputVO;
-import com.aliyun.dingtalk.service.MessageNotificationService;
-import com.aliyun.dingtalk.model.RpcServiceResult;
+import com.aliyun.dingtalk.service.message.MessageNotificationService;
+import com.aliyun.dingtalk.model.ServiceResult;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,27 +13,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
 
 /**
  * 钉钉消息通知
  */
+@Slf4j
 @RestController
 public class MessageNotificationController {
 
     @Autowired
     private MessageNotificationService messageNotificationService;
 
-    /**
-     * 欢迎页面, 检查后端服务是否启动
-     *
-     * @return
-     */
-    @GetMapping("/welcome")
-    public String welcome() {
-        return "welcome";
-    }
 
     /**
      * 发送工作通知
@@ -38,9 +32,9 @@ public class MessageNotificationController {
      * @return
      */
     @PostMapping("/message/work")
-    public RpcServiceResult sendWorkNotice(@RequestBody List<String> userIdList) {
-
-        return RpcServiceResult.getSuccessResult(messageNotificationService.sendWorkNotice(userIdList));
+    public ServiceResult sendWorkNotice(@RequestBody DingTalkWorkNoticeInputVO dingTalkWorkNoticeInputVO) {
+        log.info("MessageNotificationController#sendWorkNotice param : {}", JSONObject.toJSON(dingTalkWorkNoticeInputVO));
+        return ServiceResult.getSuccessResult(messageNotificationService.sendWorkNotice(dingTalkWorkNoticeInputVO));
 
     }
 
@@ -50,9 +44,9 @@ public class MessageNotificationController {
      * @return
      */
     @PostMapping("/message/group")
-    public RpcServiceResult sendGroupMessage(@RequestBody GroupMessageInputVO groupMessageInputVO) {
-
-        return RpcServiceResult.getSuccessResult(messageNotificationService.sendGroupMessage(groupMessageInputVO));
+    public ServiceResult sendGroupMessage(@RequestBody GroupMessageInputVO groupMessageInputVO) {
+        log.info("MessageNotificationController#sendGroupMessage param : {}", JSONObject.toJSON(groupMessageInputVO));
+        return ServiceResult.getSuccessResult(messageNotificationService.sendGroupMessage(groupMessageInputVO));
 
     }
 
@@ -62,9 +56,9 @@ public class MessageNotificationController {
      * @return
      */
     @GetMapping("/message/group/{messageId}")
-    public RpcServiceResult getReadList(@PathVariable String messageId) {
-
-        return RpcServiceResult.getSuccessResult(messageNotificationService.getReadList(messageId));
+    public ServiceResult getReadList(@PathVariable String messageId) {
+        log.info("MessageNotificationController#getReadList param : {}", messageId);
+        return ServiceResult.getSuccessResult(messageNotificationService.getReadList(messageId));
 
     }
 

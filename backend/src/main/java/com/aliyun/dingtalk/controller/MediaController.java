@@ -1,7 +1,7 @@
 package com.aliyun.dingtalk.controller;
 
-import com.aliyun.dingtalk.model.RpcServiceResult;
-import com.aliyun.dingtalk.service.MediaService;
+import com.aliyun.dingtalk.model.ServiceResult;
+import com.aliyun.dingtalk.service.media.MediaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,9 +21,9 @@ public class MediaController {
      * @return
      */
     @PostMapping("/upload")
-    public RpcServiceResult uploadMedia() {
+    public ServiceResult uploadMedia() {
 
-        return RpcServiceResult.getSuccessResult(mediaService.uploadMedia());
+        return ServiceResult.getSuccessResult(mediaService.uploadMedia());
 
     }
 

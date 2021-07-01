@@ -9,21 +9,12 @@ export const domain = "";
 
 function App() {
 
-    const sendGroupMessage = () => {
+    const uploadMedia = () => {
         // 获取存储的用户部门和ID
-        const userId = sessionStorage.getItem('userId');
-        const unionId = sessionStorage.getItem('unionId');
-        const inviteUnionId = sessionStorage.getItem('inviteUnionId');
-        const deptId = sessionStorage.getItem('deptId');
-        // demo直接构建了要请求的数据，实际开发需要从页面获取
-        const data = {
-            "owner": userId,
-            "confTitle": "会议Demo",
-            "inviteUserIds": [inviteUnionId]
-        };
+        const data = {};
         // 发起会议
         axios({
-            url: domain + '/meeting',
+            url: domain + '/upload',
             method: 'post',
             data: data,
             headers: {
@@ -33,7 +24,49 @@ function App() {
             .then(function (response) {
                 // alert(JSON.stringify(response));
                 console.log(response);
-                sessionStorage.setItem("conferenceId", response.data.result.conferenceId);
+                sessionStorage.setItem("mediaId", response.data.data);
+
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
+    const sendGroupMessage = () => {
+        // 获取存储的用户部门和ID
+        const userId = sessionStorage.getItem('userId');
+        const userIdList = sessionStorage.getItem('userIdList');
+        const deptId = sessionStorage.getItem('deptId');
+        // demo直接构建了要请求的数据，实际开发需要从页面获取
+        let url = 'https://www.dingtalk.com';
+
+        const data = {
+            "owner": userId,
+            "name" : "群消息",
+            "userIdList" : [userIdList],
+            "dingTalkMessage" : {
+                "msgType" : "link",
+                "link" :{
+                    "messageUrl" : "dingtalk://dingtalkclient/page/link?url=" + encodeURIComponent(url) + "&pc_slide=true",
+                    "picUrl" : sessionStorage.getItem('mediaId'),
+                    "title" : "测试",
+                    "text" : "测试",
+                }
+            }
+        };
+        // 发起会议
+        axios({
+            url: domain + '/message/group',
+            method: 'post',
+            data: data,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(function (response) {
+                // alert(JSON.stringify(response));
+                console.log(response);
+                sessionStorage.setItem("messageId", response.data.data);
 
             })
             .catch(function (error) {
@@ -42,20 +75,11 @@ function App() {
     };
 
     const readUserList = () => {
-        // 获取存储的用户部门和ID
-        const unionId = sessionStorage.getItem('unionId');
-        const conferenceId = sessionStorage.getItem('conferenceId');
 
-        // 关闭会议
-        axios({
-            url: domain + '/meeting?conferenceId=' + conferenceId + '&unionId=' + unionId,
-            method: 'put',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+        // 获取已读人员列表
+        axios.get(domain + '/message/group/' + sessionStorage.getItem("messageId"))
             .then(function (response) {
-
+                alert(JSON.stringify(response.data.data))
             })
             .catch(function (error) {
                 console.log(error);
@@ -68,8 +92,9 @@ function App() {
             {/*<button onClick={createMeeting}>领用并提交审批</button>*/}
             {/*</header>*/}
             <header className="App-header">
-            <button onClick={sendGroupMessage}>发送群消息</button>
-            <button onClick={readUserList}>查看已读人员列表</button>
+                <button onClick={uploadMedia}>上传媒体文件</button>
+                <button onClick={sendGroupMessage}>发送群消息</button>
+                <button onClick={readUserList}>查看已读人员列表</button>
             </header>
             {/*<div className="container">*/}
             {/*    <List/>*/}
@@ -94,7 +119,7 @@ dd.ready(function () {
         .then(res => res.json())
         .then((result) => {
             // alert(JSON.stringify(result));
-            corpId = result.result.corpId;
+            corpId = result.data.corpId;
             // dd.ready参数为回调函数，在环境准备就绪时触发，jsapi的调用需要保证在该回调函数触发后调用，否则无效。
             dd.runtime.permission.requestAuthCode({
 
@@ -105,24 +130,24 @@ dd.ready(function () {
                         .then(response => {
                             // alert(JSON.stringify(response));
                             // alert(JSON.stringify(response.data));
-                            // alert(JSON.stringify(response.data.result.userid));
-                            // alert(JSON.stringify(response.data.result.deptIdList[0]));
+                            // alert(JSON.stringify(response.data.data.userid));
+                            // alert(JSON.stringify(response.data.data.deptIdList[0]));
                             // 登录成功后储存用户部门和ID
-                            sessionStorage.setItem("userId", response.data.result.userid);
-                            sessionStorage.setItem("unionId", response.data.result.unionid);
-                            sessionStorage.setItem("deptId", response.data.result.deptIdList[0]);
+                            sessionStorage.setItem("userId", response.data.data.userid);
+                            sessionStorage.setItem("unionId", response.data.data.unionid);
+                            sessionStorage.setItem("deptId", response.data.data.deptIdList[0]);
                             const qs = require('qs');
                             axios.get(domain + "/users", {
                                 params: {
-                                    deptIds: response.data.result.deptIdList,
+                                    deptIds: response.data.data.deptIdList,
                                 },
                                 paramsSerializer: function (params) {
                                     return qs.stringify(params, {arrayFormat: 'repeat'});
                                 }
                             }).then(response => {
                                 console.log(response);
-                                // 此处为硬编码邀请人的unionid，可以使用response里面返回的数据
-                                sessionStorage.setItem("inviteUnionId", "***");
+                                // 此处为创建人的userId，可以使用response里面返回的数据
+                                sessionStorage.setItem("userIdList", sessionStorage.getItem("userId"));
                             }).catch(error => {
                                 alert(JSON.stringify(error));
                             })
