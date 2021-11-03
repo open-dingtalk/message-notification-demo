@@ -15,7 +15,7 @@ function App() {
   const [showType, setShowType] = useState(0)
   const [userIdList, setUserIdList] = useState([])
   useEffect(() => {
-    return
+    // return
     dd.ready(function () {
       // let corpId;
       // axios.get(domain + "/config")
