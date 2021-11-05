@@ -9,5 +9,5 @@ import java.util.Map;
 public interface DingTalkUserService {
     OapiV2UserGetResponse.UserGetResponse getUserInfo(String authCode);
 
-    Map<String, String> getUsersByDeptIds(List<Long> deptIds);
+    List<Map<String, String>> getUsersByDeptIds(List<Long> deptIds);
 }

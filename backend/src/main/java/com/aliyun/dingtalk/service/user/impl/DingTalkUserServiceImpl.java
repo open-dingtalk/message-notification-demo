@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -50,7 +51,7 @@ public class DingTalkUserServiceImpl implements DingTalkUserService {
     }
 
     @Override
-    public Map<String, String> getUsersByDeptIds(List<Long> deptIds) {
+    public List<Map<String, String>> getUsersByDeptIds(List<Long> deptIds) {
 
         String accessToken = AccessTokenUtil.getAccessToken(appConfig.getAppKey(), appConfig.getAppSecret());
 
@@ -60,8 +61,15 @@ public class DingTalkUserServiceImpl implements DingTalkUserService {
             getUsersByDeptId(0L, deptId, accessToken, users)
         );
 
-        Map<String, String> userMap = users.stream().collect(Collectors.toMap(OapiV2UserListResponse.ListUserResponse::getName, OapiV2UserListResponse.ListUserResponse::getUserid, (v1, v2) -> v2));
-        return userMap;
+        List<Map<String, String>> mapList = new ArrayList<>();
+
+        users.stream().forEach(user -> {
+            Map map = new HashMap();
+            map.put("name", user.getName());
+            map.put("userId", user.getUserid());
+            mapList.add(map);
+        });
+        return mapList;
     }
 
     public void getUsersByDeptId(Long cursor, Long deptId, String accessToken, List<OapiV2UserListResponse.ListUserResponse> users) {

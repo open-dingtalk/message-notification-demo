@@ -46,6 +46,7 @@ const uploadMedia = (data) => {
 
 const Group = (props) => {
   const [form] = Form.useForm()
+
   const [loading, setLoading] = useState(false)
   const [imageUrl, setImageUrl] = useState("")
 
@@ -81,9 +82,12 @@ const Group = (props) => {
 
   const onSubmit = (data) => {
     const userId = sessionStorage.getItem("userId")
-    console.log(data, "-----")
+    console.log(form.validateFields((err,value)=>{
+      console.log(err,'======',value)
+    }), "-----")
+    return
     const { userIdList, messageUrl, title, text, file } = data
-    const picUrl = file?.file?.response?.url
+    const picUrl = file?.file?.response?.data
     const params = {
       owner: userId,
       name: "群消息",
@@ -106,19 +110,19 @@ const Group = (props) => {
     <div>
       <h4 className="title">创建群消息</h4>
       <Form form={form} onFinish={onSubmit}>
-        <Form.Item label="群名称" name="name">
+        <Form.Item label="群名称" name="name" rules={[{required:true,message:'群名称必填'}]}>
           <Input placeholder="请输入群名称" />
         </Form.Item>
-        <Form.Item label="消息标题" name="title">
+        <Form.Item label="消息标题" name="title" rules={[{required:true,message:'消息标题必填'}]}>
           <Input placeholder="请输入消息标题" />
         </Form.Item>
-        <Form.Item label="消息内容" name="text">
+        <Form.Item label="消息内容" name="text" rules={[{required:true,message:'消息内容必填'}]}>
           <Input placeholder="请输入消息内容" />
         </Form.Item>
-        <Form.Item label="消息链接" name="messageUrl">
+        <Form.Item label="消息链接" name="messageUrl" rules={[{required:true,message:'消息链接必填'}]}>
           <Input placeholder="请输入消息链接" />
         </Form.Item>
-        <Form.Item label="消息图片" name="file">
+        <Form.Item label="消息图片" name="file" rules={[{required:true,message:'消息图片必填'}]}>
           <Upload
             listType="picture-card"
             className="avatar-uploader"
@@ -126,7 +130,6 @@ const Group = (props) => {
             action="/upload"
             // https://www.mocky.io/v2/5cc8019d300000980a055e76
             // beforeUpload={beforeUpload}
-            headers={{ "Content-Type": "application/json" }}
             onChange={handleChange}
           >
             {imageUrl ? (
@@ -136,7 +139,7 @@ const Group = (props) => {
             )}
           </Upload>
         </Form.Item>
-        <Form.Item label="选择发送人" name="userIdList">
+        <Form.Item label="选择发送人" name="userIdList" rules={[{required:true,message:'发送人必选'}]}>
           <Checkbox.Group>
             {/* onChange={onChange} */}
             {/*  [

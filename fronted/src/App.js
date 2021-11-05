@@ -4,6 +4,7 @@ import axios from "axios"
 import * as dd from "dingtalk-jsapi"
 import { Button } from "antd"
 import Group from "./components/Group"
+import ReadedUsers from "./components/ReadedUsers"
 import "antd/dist/antd.min.css"
 
 //内网穿透工具介绍:
@@ -14,8 +15,9 @@ export const domain = ""
 function App() {
   const [showType, setShowType] = useState(0)
   const [userIdList, setUserIdList] = useState([])
+  const [readedUserList,setReadedUserList] = useState([])
   useEffect(() => {
-    // return
+    return
     dd.ready(function () {
       // let corpId;
       // axios.get(domain + "/config")
@@ -157,7 +159,7 @@ function App() {
     })
       .then(function (response) {
         // alert(JSON.stringify(response));
-        setShowType(false)
+        setShowType(0)
         console.log(response)
         sessionStorage.setItem("messageId", response.data.data)
       })
@@ -171,7 +173,7 @@ function App() {
     axios
       .get(domain + "/message/group/" + sessionStorage.getItem("messageId"))
       .then(function (response) {
-        setUserIdList(response.data.data)
+        setReadedUserList(response.data.data)
         alert(JSON.stringify(response.data.data))
       })
       .catch(function (error) {
@@ -191,22 +193,24 @@ function App() {
           userIdList={userIdList}
         />
       )}
-      <header className="App-header">
+      <div>
         {/* <Button onClick={uploadMedia}>上传媒体文件</Button> */}
         {!showType && (
           <Button type="primary" onClick={() => setShowType(1)}>
             发送群消息
           </Button>
         )}
+        <br/><br/>
         {!showType && (
           <Button type="primary" onClick={readUserList}>
             查看已读人员列表
           </Button>
         )}
-      </header>
-      {/*<div className="container">*/}
-      {/*    <List/>*/}
-      {/*</div>*/}
+      </div>
+      {showType===2&&<div>
+          <ReadedUsers readedUserList={readedUserList}/>
+      </div>}
+     
     </div>
   )
 }
