@@ -115,7 +115,7 @@ function App() {
           src="https://img.alicdn.com/imgextra/i3/O1CN01Mpftes1gwqxuL0ZQE_!!6000000004207-2-tps-240-240.png"
           className="headImg"
         />
-        钉钉 demo
+        钉钉模板
       </div>
 
       <div className="App">
