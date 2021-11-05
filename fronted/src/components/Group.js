@@ -82,7 +82,7 @@ const Group = (props) => {
     const userId = sessionStorage.getItem("userId")
     console.log(data, "-----")
     const { userIdList, messageUrl, title, text, file } = data
-    const picUrl = file?.file?.response?.url
+    const picUrl = file?.file?.response?.data.data
     const params = {
       owner: userId,
       name: "群消息",
@@ -125,7 +125,6 @@ const Group = (props) => {
             action="/upload"
             // https://www.mocky.io/v2/5cc8019d300000980a055e76
             // beforeUpload={beforeUpload}
-            headers={{ "Content-Type": "application/json" }}
             onChange={handleChange}
           >
             {imageUrl ? (
