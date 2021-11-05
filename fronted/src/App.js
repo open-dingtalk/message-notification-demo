@@ -37,7 +37,7 @@ function App() {
                     "deptId",
                     response.data.data.deptIdList[0]
                   )
-                  message.success("登陆成功：" + response.data.data.userName)
+                  message.success("登陆成功：" + response.data.data.name)
                   const qs = require("qs")
                   // 获取部门部门用户详情
                   axios
