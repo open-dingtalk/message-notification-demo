@@ -17,6 +17,7 @@ function App() {
   const [userIdList, setUserIdList] = useState([])
   const [readedUserList,setReadedUserList] = useState([])
   useEffect(() => {
+    //   return
     dd.ready(function () {
       // let corpId;
       // axios.get(domain + "/config")
@@ -157,10 +158,10 @@ function App() {
       },
     })
       .then(function (response) {
-        // alert(JSON.stringify(response));
-        setShowType(0)
-        console.log(response)
-        sessionStorage.setItem("messageId", response.data.data)
+          if(response.data.success){
+            setShowType(0)
+            sessionStorage.setItem("messageId", response.data.data)
+          }
       })
       .catch(function (error) {
         console.log(error)

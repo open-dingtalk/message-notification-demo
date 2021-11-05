@@ -80,12 +80,10 @@ const Group = (props) => {
     // })
   }, [])
 
-  const onSubmit = (data) => {
+  const onSubmit = async () => {
     const userId = sessionStorage.getItem("userId")
-    console.log(form.validateFields((err,value)=>{
-      console.log(err,'======',value)
-    }), "-----")
-    const { userIdList, messageUrl, title, text, file } = data
+    await form.validateFields().then(values=>{
+      const { userIdList, messageUrl, title, text, file } = values
     const picUrl = file?.file?.response?.data
     const params = {
       owner: userId,
@@ -101,8 +99,8 @@ const Group = (props) => {
         },
       },
     }
-
     props.onClick(params)
+    })
   }
 
   return (
@@ -126,8 +124,8 @@ const Group = (props) => {
             listType="picture-card"
             className="avatar-uploader"
             showUploadList={false}
-            action="/upload"
-            // https://www.mocky.io/v2/5cc8019d300000980a055e76
+            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+            // /upload
             // beforeUpload={beforeUpload}
             onChange={handleChange}
           >
@@ -141,10 +139,10 @@ const Group = (props) => {
         <Form.Item label="选择发送人" name="userIdList" rules={[{required:true,message:'发送人必选'}]}>
           <Checkbox.Group>
             {/* onChange={onChange} */}
-            {/*  [
-              { name: "11111", userid: "22222" },
-              { name: "333", userid: "444" },
-            ]*/}
+            {/*[
+              { name: "11111", userId: "22222" },
+              { name: "333", userId: "444" },
+            ]  */}
             {props.userIdList.map((item, i) => (
               <div key={"userid" + i}>
                 <Checkbox value={item.userId} name={item.name}>
