@@ -56,6 +56,7 @@ const Group = (props) => {
     </div>
   )
   const handleChange = (info) => {
+   
     if (info.file.status === "uploading") {
       setLoading(true)
       return
