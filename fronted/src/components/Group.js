@@ -85,7 +85,6 @@ const Group = (props) => {
     console.log(form.validateFields((err,value)=>{
       console.log(err,'======',value)
     }), "-----")
-    return
     const { userIdList, messageUrl, title, text, file } = data
     const picUrl = file?.file?.response?.data
     const params = {
