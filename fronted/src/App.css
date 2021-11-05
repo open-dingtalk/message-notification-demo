@@ -1,5 +1,20 @@
+body {
+  width: 100%;
+  height: 100%;
+}
+
+.content {
+  width: 100%;
+  height: 100%;
+  background: #f6f6f6;
+}
+
 .App {
+  max-width: 500px;
   padding: 24px;
+  height: 100%;
+  background-color: #fff;
+  margin: 0 auto;
 }
 
 .AppLink {
@@ -10,6 +25,20 @@
 }
 .AppLink:hover {
   cursor: pointer;
+}
+
+.header {
+  height: 48px;
+  line-height: 48px;
+  background: #fff;
+  text-align: center;
+  border-bottom: 1px solid #f6f6f6;
+}
+
+.headImg {
+  height: 36px;
+  width: 36px;
+  margin-right: 12px;
 }
 
 .title {
@@ -29,9 +58,4 @@
 
 .radioList {
   margin-bottom: 12px;
-}
-
-.avatar-uploader > .ant-upload {
-  width: 128px;
-  height: 128px;
 }
