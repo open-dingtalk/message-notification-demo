@@ -17,6 +17,7 @@ function App() {
   const [userIdList, setUserIdList] = useState([])
   const [readedUserList, setReadedUserList] = useState([])
   useEffect(() => {
+    return
     dd.ready(function () {
       let corpId
       fetch(domain + "/config")
@@ -123,6 +124,7 @@ function App() {
           <Group
             onClick={(params) => sendGroupMessage(params)}
             userIdList={userIdList}
+            onClose={() => setShowType(0)}
           />
         )}
         <div>
@@ -141,7 +143,10 @@ function App() {
         </div>
         {showType === 2 && (
           <div>
-            <ReadedUsers readedUserList={readedUserList} />
+            <ReadedUsers
+              readedUserList={readedUserList}
+              onClose={() => setShowType(0)}
+            />
           </div>
         )}
       </div>

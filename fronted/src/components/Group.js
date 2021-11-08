@@ -58,6 +58,9 @@ const Group = (props) => {
 
   return (
     <div>
+      <a onClick={props.onClose}>←返回</a>
+      <br />
+      <br />
       <h4 className="title">创建群消息</h4>
       <Form form={form} onFinish={onSubmit}>
         <Form.Item
@@ -99,6 +102,7 @@ const Group = (props) => {
             showUploadList={false}
             action="/upload"
             onChange={handleChange}
+            style={{ overflow: "hidden" }}
           >
             {imageUrl ? (
               <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />

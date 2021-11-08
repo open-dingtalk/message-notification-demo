@@ -9,7 +9,14 @@ const ReadedUsers = (props) => {
       key: "userId",
     },
   ]
-  return <Table columns={column} dataSource={props.readedUserList} />
+  return (
+    <div>
+      <a onClick={props.onClose}>←返回</a>
+      <br />
+      <br />
+      <Table columns={column} dataSource={props.readedUserList} />
+    </div>
+  )
 }
 
 export default ReadedUsers
