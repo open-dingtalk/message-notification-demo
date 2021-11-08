@@ -17,7 +17,6 @@ function App() {
   const [userIdList, setUserIdList] = useState([])
   const [readedUserList, setReadedUserList] = useState([])
   useEffect(() => {
-    return
     dd.ready(function () {
       let corpId
       fetch(domain + "/config")
