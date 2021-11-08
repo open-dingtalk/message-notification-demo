@@ -8,6 +8,18 @@ function getBase64(img, callback) {
   reader.readAsDataURL(img)
 }
 
+function beforeUpload(file) {
+  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'|| file.type === 'image/gif'|| file.type === 'image/bmp';
+  if (!isJpgOrPng) {
+    message.error('图片类型支持jpg/png/gif/bmp格式');
+  }
+  const isLt2M = file.size / 1024 / 1024 < 1;
+  if (!isLt2M) {
+    message.error('图片最大上传1M!');
+  }
+  return isJpgOrPng && isLt2M;
+}
+
 const Group = (props) => {
   const [form] = Form.useForm()
 
@@ -101,6 +113,7 @@ const Group = (props) => {
             className="avatar-uploader"
             showUploadList={false}
             action="/upload"
+            beforeUpload={beforeUpload}
             onChange={handleChange}
             style={{ overflow: "hidden" }}
           >
