@@ -58,6 +58,7 @@ maven_build_package(){
 
 #Start method
 start() {
+   stop
    echo ">>>> maven_build_package"
    maven_build_package
    echo ">>>> extract_jar"
