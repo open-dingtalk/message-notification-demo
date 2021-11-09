@@ -30,31 +30,31 @@ extract_jar() {
 
 }
 
-#start_pierced() {
-#  cd ../../
-#  if [ ! -d "pierced/" ];then
-#    git clone https://github.com/open-dingtalk/pierced.git
-#    cd pierced/mac_64
-#    chmod 777 ./ding
-#    ./ding -config=./ding.cfg -subdomain=${appKey} $port
-#  else
-#    cd pierced/mac_64
-#    chmod 777 ./ding
-#    ./ding -config=./ding.cfg -subdomain=${appKey} $port
-#  fi
-#
-#}
-
-npm_run_build() {
-  cd ../fronted
-  if [ ! -d "node_modules/" ];then
-    npm install
-    npm run build
+start_pierced() {
+  cd ../../
+  if [ ! -d "pierced/" ];then
+    git clone https://github.com/open-dingtalk/pierced.git
+    cd pierced/mac_64
+    chmod 777 ./ding
+    ./ding -config=./ding.cfg -subdomain=${appKey} $port
   else
-    npm run build
+    cd pierced/mac_64
+    chmod 777 ./ding
+    ./ding -config=./ding.cfg -subdomain=${appKey} $port
   fi
-  cd ../backend
+
 }
+
+#npm_run_build() {
+#  cd ../fronted
+#  if [ ! -d "node_modules/" ];then
+#    npm install
+#    npm run build
+#  else
+#    npm run build
+#  fi
+#  cd ../backend
+#}
 
 maven_build_package(){
   mvn clean package
@@ -70,15 +70,15 @@ maven_build_package(){
 #Start method
 start() {
    stop
-   echo ">>>> npm_run_build"
-   npm_run_build
+#   echo ">>>> npm_run_build"
+#   npm_run_build
    echo ">>>> maven_build_package"
    maven_build_package
    echo ">>>> extract_jar"
    extract_jar
    java -jar ${APP_NAME} --port=${port} --appKey=${appKey} --appSecret=${appSecret} --agentId=${agentId} --corpId=${corpId} >> Log.log 2>&1 &
-#   echo ">>>> start_pierced"
-#   start_pierced
+   echo ">>>> start_pierced"
+   start_pierced
 }
 
 stop() {
