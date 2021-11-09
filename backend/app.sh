@@ -30,20 +30,20 @@ extract_jar() {
 
 }
 
-start_pierced() {
-  cd ../../
-  if [ ! -d "pierced/" ];then
-    git clone https://github.com/open-dingtalk/pierced.git
-    cd pierced/mac_64
-    chmod 777 ./ding
-    ./ding -config=./ding.cfg -subdomain=${appKey} $port
-  else
-    cd pierced/mac_64
-    chmod 777 ./ding
-    ./ding -config=./ding.cfg -subdomain=${appKey} $port
-  fi
-
-}
+#start_pierced() {
+#  cd ../../
+#  if [ ! -d "pierced/" ];then
+#    git clone https://github.com/open-dingtalk/pierced.git
+#    cd pierced/mac_64
+#    chmod 777 ./ding
+#    ./ding -config=./ding.cfg -subdomain=${appKey} $port
+#  else
+#    cd pierced/mac_64
+#    chmod 777 ./ding
+#    ./ding -config=./ding.cfg -subdomain=${appKey} $port
+#  fi
+#
+#}
 
 npm_run_build() {
   cd ../fronted
@@ -77,8 +77,8 @@ start() {
    echo ">>>> extract_jar"
    extract_jar
    java -jar ${APP_NAME} --port=${port} --appKey=${appKey} --appSecret=${appSecret} --agentId=${agentId} --corpId=${corpId} >> Log.log 2>&1 &
-   echo ">>>> start_pierced"
-   start_pierced
+#   echo ">>>> start_pierced"
+#   start_pierced
 }
 
 stop() {
