@@ -52,6 +52,8 @@ https://github.com/open-dingtalk/message-notification-demo.git
    ![image-20210701133842908](https://img.alicdn.com/imgextra/i4/O1CN01Ns2Oey1xPHN6Z870f_!!6000000006435-2-tps-2856-1076.png)
 #### 使用命令行安装依赖&打包
 
+> 如果修改了前端页面需要重新打包，没有修改就不需要
+
 ```txt
 cd fronted/
 ```
@@ -72,15 +74,9 @@ npm run build
 
 ![image-20210701140123101](https://img.alicdn.com/imgextra/i4/O1CN01h1FA2s28m8uydeNYH_!!6000000007974-2-tps-2234-1142.png)
 
-#### 将打包好的静态资源文件放入后端服务
-
-![image-20210701140225679](https://img.alicdn.com/imgextra/i1/O1CN01cv0kz81xVgutF1Tmm_!!6000000006449-2-tps-2208-1152.png)
-
 ### 启动项目-移动端钉钉访问
 
-#### 首页
-
-<img src="https://img.alicdn.com/imgextra/i4/O1CN01FUanNd1Z9Ch4OL0kE_!!6000000003151-0-tps-282-720.jpg" />
+<img src="https://img.alicdn.com/imgextra/i4/O1CN01V31jMp219wbZJhvxx_!!6000000006943-0-tps-1440-3200.jpg" />
 
 #### PC端钉钉接收消息
 
