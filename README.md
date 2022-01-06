@@ -55,7 +55,7 @@ https://github.com/open-dingtalk/message-notification-demo.git
 > 如果修改了前端页面需要重新打包，没有修改就不需要
 
 ```txt
-cd fronted/
+cd frontend/
 ```
 
 ![image-20210701135749459](https://img.alicdn.com/imgextra/i1/O1CN01NF9xeP1fYI5Boml5K_!!6000000004018-2-tps-2658-686.png)
