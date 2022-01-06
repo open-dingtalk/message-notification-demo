@@ -6,7 +6,7 @@
 
     <groupId>com.aliyun.dingtalk</groupId>
     <artifactId>backend</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <description>backend project for &amp;dingtalk</description>
     <properties>
         <java.version>1.8</java.version>
@@ -23,6 +23,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.18.22</version>
             <optional>true</optional>
         </dependency>
         <dependency>
